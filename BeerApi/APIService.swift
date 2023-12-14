@@ -81,7 +81,7 @@ class APIService {
            
            URLSession.shared.dataTask(with: request) { data, response, error in
                DispatchQueue.main.async {
-                   if let error = error {
+                   if error != nil {
                        //self.errorMessage = error.localizedDescription
                        return
                    }
@@ -90,7 +90,7 @@ class APIService {
                        return
                    }
                    do {
-                       let decodedResponse = try JSONDecoder().decode(ApiResponse.self, from: data)
+                       _ = try JSONDecoder().decode(ApiResponse.self, from: data)
                        
                        //self.fetchFabricantes() TENGO QUE IMPLEMENTAR ESTO
 

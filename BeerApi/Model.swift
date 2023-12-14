@@ -23,11 +23,11 @@ class ManufacturersModel {
             APIService.shared.uploadFabricante(name: name, image: image) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
-                    case .success(let response):
+                    case .success(_):
                      
                         self?.loadFabricantes()
                         break;
-                    case .failure(let error):
+                    case .failure(_):
                         
                         break;
                     }
