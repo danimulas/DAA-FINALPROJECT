@@ -1,13 +1,13 @@
 //
-//  BeerProjectUITestsLaunchTests.swift
-//  BeerProjectUITests
+//  BeerApiUITestsLaunchTests.swift
+//  BeerApiUITests
 //
-//  Created by Dani Mulas on 24/11/23.
+//  Created by Dani Mulas on 3/12/23.
 //
 
 import XCTest
 
-final class BeerProjectUITestsLaunchTests: XCTestCase {
+final class BeerApiUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

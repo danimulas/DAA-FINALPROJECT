@@ -1,14 +1,14 @@
 //
-//  BeerProjectApp.swift
-//  BeerProject
+//  BeerApiApp.swift
+//  BeerApi
 //
-//  Created by Dani Mulas on 24/11/23.
+//  Created by Dani Mulas on 3/12/23.
 //
 
 import SwiftUI
 
 @main
-struct BeerProjectApp: App {
+struct BeerApiApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

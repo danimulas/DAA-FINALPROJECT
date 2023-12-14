@@ -1,13 +1,13 @@
 //
-//  BeerProjectUITests.swift
-//  BeerProjectUITests
+//  BeerApiUITests.swift
+//  BeerApiUITests
 //
-//  Created by Dani Mulas on 24/11/23.
+//  Created by Dani Mulas on 3/12/23.
 //
 
 import XCTest
 
-final class BeerProjectUITests: XCTestCase {
+final class BeerApiUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
