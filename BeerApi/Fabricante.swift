@@ -6,7 +6,8 @@ struct Fabricante: Codable, Identifiable {
     var id: String
     var nombre: String
     var logo: String
-    var cervezas: [Cerveza]? 
+    var tipo : String
+    var cervezas: [Cerveza]?
 
     var logoImage: UIImage? {
         //COmprobamos que lo q nos llega es una UImage

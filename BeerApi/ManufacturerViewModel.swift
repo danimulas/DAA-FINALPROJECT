@@ -14,9 +14,41 @@ class ManufacturerViewModel: ObservableObject {
     
     @Published var cervezas: [Cerveza] = []
     @Published var message: String = ""
+    func updateCerveza(updatedCerveza: Cerveza) {
+        // Asegúrate de que Cerveza tiene las propiedades necesarias
+        let updateRequest = UpdateCervezaRequest(
+            id_cerveza: updatedCerveza.id, // Suponiendo que Cerveza tiene un 'id'
+            nombre: updatedCerveza.nombre,
+            tipo: updatedCerveza.tipo ?? "",
+            logo: updatedCerveza.logo ?? "",
+            descripcion: updatedCerveza.descripcion ?? "",
+            grados: updatedCerveza.grados ?? 0.0
+        )
+        
+        // Llamar al modelo con la estructura de solicitud correcta
+        manufacturersModel.updateCerveza(updateRequest: updateRequest)
+        
+    }
+        
+    /*
+    func filteredFabricantes(by type: BeerType) -> [Fabricante] {
+        switch type {
+        case .all:
+            return fabricantes
+        case .national:
+            return fabricantes.filter { $0.tipo == "nacional" }
+        case .imported:
+            return fabricantes.filter { $0.tipo == "importado" }
+        }
+    }*/
+    func deleteCerveza(idCerveza: String?) {
+            guard let idCerveza = idCerveza else { return }
+            manufacturersModel.deleteCerveza(idCerveza: idCerveza)
+            
+    }
     
-    func uploadFabricante(name: String, image: UIImage) {
-            manufacturersModel.uploadFabricante(name: name, image: image)
+    func uploadFabricante(name: String,tipo: String, image: UIImage) {
+        manufacturersModel.uploadFabricante(name: name,tipo: tipo, image: image)
         }
 
     init() {

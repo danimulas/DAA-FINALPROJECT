@@ -3,7 +3,7 @@ import SwiftUI
 class Cerveza: Identifiable, Codable {
     var id: String
     var nombre: String
-    var tipo: String?
+    var tipo: String? // deberia de quitarlo porque tienen q tener tipo 
     var descripcion: String?
     var grados: Double?
     var logo: String

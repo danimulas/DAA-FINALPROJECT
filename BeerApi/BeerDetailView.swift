@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BeerDetailView: View {
     var cerveza: Cerveza
+    @ObservedObject var viewModel: ManufacturerViewModel
 
     var body: some View {
         ScrollView {
@@ -28,6 +29,14 @@ struct BeerDetailView: View {
                 if let grados = cerveza.grados {
                     Text("Grados: \(grados)")
                 }
+                NavigationLink(destination: EditBeerView(cerveza: cerveza, viewModel: viewModel)) {
+                                   Text("Editar Cerveza")
+                                       .font(.headline)
+                                       .foregroundColor(.white)
+                                       .padding()
+                                       .background(Color.blue)
+                                       .cornerRadius(8)
+                               }
             }
             .padding()
         }

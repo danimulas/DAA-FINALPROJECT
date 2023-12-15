@@ -17,10 +17,50 @@ struct CervezaRequest: Codable {
     let descripcion: String
     let grados: Int
 }
+struct UpdateCervezaRequest: Codable {
+    let id_cerveza: String
+    let nombre: String
+    let tipo: String
+    let logo: String
+    let descripcion: String
+    let grados: Double
+}
 class APIService {
     static let shared = APIService()
     private let apiKey = "f8c393cd-5860-4c4a-a967-7edfb94d9c0a"
     
+    func updateBeer(cerveza: UpdateCervezaRequest) {
+           let urlString = "http://143.47.45.118:6969/daa-api/v1/cerveza/updateCerveza"
+           guard let url = URL(string: urlString) else {
+               return
+           }
+           
+           guard let jsonData = try? JSONEncoder().encode(cerveza) else {
+               let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Unable to encode update cerveza data"])
+               return
+           }
+           
+           var request = URLRequest(url: url)
+           request.httpMethod = "PUT"
+           request.setValue(apiKey, forHTTPHeaderField: "X-API-KEY")
+           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+           request.httpBody = jsonData
+           
+           URLSession.shared.dataTask(with: request) { data, response, error in
+               if let error = error {
+                   return
+               }
+               
+               if let httpResponse = response as? HTTPURLResponse {
+                   switch httpResponse.statusCode {
+                   default:
+                       let responseBody = data.flatMap { String(data: $0, encoding: .utf8) } ?? "No response body"
+                       print("Response Body: \(responseBody)")
+                       let serverError = NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server returned status code \(httpResponse.statusCode)"])
+                   }
+               }
+           }.resume()
+       }
     func fetchFabricantes(completion: @escaping (Result<[Fabricante], Error>) -> Void) {
         let urlString = "http://143.47.45.118:6969/daa-api/v1/fabricante/getFabricantes"
         guard let url = URL(string: urlString) else {
@@ -48,7 +88,7 @@ class APIService {
             }
         }.resume()
     }
-    func uploadFabricante(name: String, image: UIImage, completion: @escaping (Result<ApiResponse, Error>) -> Void) {
+    func uploadFabricante(name: String,tipo: String, image: UIImage, completion: @escaping (Result<ApiResponse, Error>) -> Void) {
            guard let imageData = image.jpegData(compressionQuality: 0.8) else {
                //self.errorMessage = "Image could not be converted to Data."
                return
@@ -69,7 +109,8 @@ class APIService {
 
            let body: [String: Any] = [
                "nombre": name,
-               "logo": base64ImageString
+               "logo": base64ImageString,
+               "tipo": tipo
            ]
 
            guard let bodyData = try? JSONSerialization.data(withJSONObject: body, options: []) else {
@@ -205,5 +246,32 @@ class APIService {
             }
         }.resume()
     }
+    func deleteBeer(idCerveza: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+            let urlString = "http://143.47.45.118:6969/daa-api/v1/cerveza/deleteCerveza"
+            var components = URLComponents(string: urlString)
+            components?.queryItems = [URLQueryItem(name: "id_cerveza", value: idCerveza)]
 
+            guard let url = components?.url else {
+                completion(.failure(URLError(.badURL)))
+                return
+            }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "DELETE"
+            request.setValue(apiKey, forHTTPHeaderField: "X-API-KEY")
+
+            URLSession.shared.dataTask(with: request) { _, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+
+                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    print("API DICE ELIMINADA CON EXITO")
+                    completion(.success(true))
+                } else {
+                    completion(.failure(URLError(.badServerResponse)))
+                }
+            }.resume()
+        }
 }

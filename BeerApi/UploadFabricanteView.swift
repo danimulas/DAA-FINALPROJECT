@@ -12,7 +12,9 @@ struct UploadFabricanteView: View {
     @State private var selectedImage: UIImage?
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
-    
+    @State private var selectedType: String = "nacionales"
+
+    @State private var ManufacturerType = ["importados","nacionales"]
     var body: some View {
         NavigationView {
             VStack {
@@ -26,7 +28,12 @@ struct UploadFabricanteView: View {
                         .scaledToFit()
                         .frame(height: 200)
                 }
-                
+                Picker("Tipo", selection: $selectedType) {
+                    ForEach(ManufacturerType, id: \.self) {
+                        Text($0)
+                    }
+                }
+                .pickerStyle(.menu)
                 Button("Seleccionar Imagen") {
                     showingImagePicker = true
                 }
@@ -34,7 +41,7 @@ struct UploadFabricanteView: View {
                 
                 Button("Subir Fabricante") {
                     if let selectedImage = selectedImage {
-                            viewModel.uploadFabricante(name: viewModel.name, image: selectedImage)
+                        viewModel.uploadFabricante(name: viewModel.name,tipo: selectedType, image: selectedImage)
                         }
                 }
                 .padding()

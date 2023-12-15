@@ -4,6 +4,15 @@ struct ContentView: View {
     @StateObject var viewModel = ManufacturerViewModel()
     @State private var showingUploadView = false
 
+    // Agrupar los fabricantes por tipo
+    private var groupedFabricantes: [String: [Fabricante]] {
+        Dictionary(grouping: viewModel.fabricantes, by: { $0.tipo })
+    }
+    
+    private var sortedKeys: [String] {
+        groupedFabricantes.keys.sorted()
+    }
+
     var body: some View {
         NavigationView {
             List {
@@ -12,39 +21,42 @@ struct ContentView: View {
                 } else if let errorMessage = viewModel.errorMessage {
                     Text("Error: \(errorMessage)")
                 } else {
-                    ForEach(viewModel.fabricantes) { fabricante in
-                        NavigationLink(destination: ManufacturerDetailView(viewModel: viewModel, idFabricante: fabricante.id)) {
-                            ManufacturerRow(fabricante: fabricante)
+                    // Iterar sobre las claves ordenadas para mostrar las secciones
+                    ForEach(sortedKeys, id: \.self) { key in
+                        Section(header: Text(key.capitalized)) {
+                            ForEach(groupedFabricantes[key] ?? []) { fabricante in
+                                NavigationLink(destination: ManufacturerDetailView(viewModel: viewModel, idFabricante: fabricante.id)) {
+                                    ManufacturerRow(fabricante: fabricante)
+                                }
+                            }
+                            .onDelete(perform: deleteFabricante)
                         }
                     }
-                    .onDelete(perform: deleteFabricante)
-
-                                   
                 }
             }
             .navigationTitle("Fabricantes")
-                        .onAppear {
-                            viewModel.loadFabricantes()
-                        }
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    showingUploadView.toggle()
-                                }) {
-                                    Image(systemName: "plus")
-                                }
-                            }
-                        }
-                        .sheet(isPresented: $showingUploadView) {
-                            UploadFabricanteView(viewModel: viewModel)
-                        }
+            .onAppear {
+                viewModel.loadFabricantes()
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showingUploadView.toggle()
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingUploadView) {
+                UploadFabricanteView(viewModel: viewModel)
+            }
         }
     }
-    private func deleteFabricante(at offsets: IndexSet) {
-            viewModel.deleteFabricante(at: offsets)
-        }
-}
 
+    private func deleteFabricante(at offsets: IndexSet) {
+        viewModel.deleteFabricante(at: offsets)
+    }
+}
 struct ManufacturerRow: View {
     let fabricante: Fabricante
 

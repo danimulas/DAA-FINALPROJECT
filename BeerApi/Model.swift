@@ -17,10 +17,24 @@ class ManufacturersModel {
             }
         }
     }
-    
-    func uploadFabricante(name: String, image: UIImage) {
+    func deleteCerveza(idCerveza: String) {
+        APIService.shared.deleteBeer(idCerveza: idCerveza) { result in
+            switch result {
+            case .success(_):
+                print("Cerveza eliminada con éxito")
+                // Aquí puedes actualizar tu lista de cervezas si es necesario
+            case .failure(let error):
+                print("Error al eliminar cerveza: \(error.localizedDescription)")
+            }
+        }
+    }
+    func updateCerveza(updateRequest: UpdateCervezaRequest) {
+        APIService.shared.updateBeer(cerveza: updateRequest)
+            
+    }
+    func uploadFabricante(name: String,tipo: String, image: UIImage) {
            
-            APIService.shared.uploadFabricante(name: name, image: image) { [weak self] result in
+        APIService.shared.uploadFabricante(name: name,tipo: tipo, image: image) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(_):
