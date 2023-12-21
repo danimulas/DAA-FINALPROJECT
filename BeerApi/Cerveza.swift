@@ -6,6 +6,7 @@ class Cerveza: Identifiable, Codable {
     var tipo: String? // deberia de quitarlo porque tienen q tener tipo 
     var descripcion: String?
     var grados: Double?
+    var kcal : Double?
     var logo: String
     var logoImage: UIImage? {
         // COnversion de la API a UImage
@@ -20,16 +21,17 @@ class Cerveza: Identifiable, Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, nombre, tipo, descripcion, grados, logo
+        case id, nombre, tipo, descripcion, grados, logo, kcal
     }
-
-    init(id: String, nombre: String, tipo: String?, descripcion: String?, grados: Double?, logo: String) {
+    
+    init(id: String, nombre: String, tipo: String?, descripcion: String?, grados: Double?, logo: String, kcal: Double?) {
         self.id = id
         self.nombre = nombre
         self.tipo = tipo
         self.descripcion = descripcion
         self.grados = grados
         self.logo = logo
+        self.kcal = kcal
     }
 
     required init(from decoder: Decoder) throws {
@@ -40,5 +42,6 @@ class Cerveza: Identifiable, Codable {
         descripcion = try container.decodeIfPresent(String.self, forKey: .descripcion)
         grados = try container.decodeIfPresent(Double.self, forKey: .grados)
         logo = try container.decode(String.self, forKey: .logo)
+        kcal = try container.decode(Double.self, forKey: .kcal)
     }
 }

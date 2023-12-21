@@ -1,14 +1,24 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var viewModel = ManufacturerViewModel()
+    @ObservedObject var viewModel = ManufacturerViewModel()
     @State private var showingUploadView = false
+    @State private var searchText = ""
+
+    // Filtered fabricantes based on searchText
+    private var filteredFabricantes: [Fabricante] {
+        if searchText.isEmpty {
+            return viewModel.fabricantes
+        } else {
+            return viewModel.fabricantes.filter { $0.nombre.lowercased().contains(searchText.lowercased()) }
+        }
+    }
 
     // Agrupar los fabricantes por tipo
     private var groupedFabricantes: [String: [Fabricante]] {
-        Dictionary(grouping: viewModel.fabricantes, by: { $0.tipo })
+        Dictionary(grouping: filteredFabricantes, by: { $0.tipo })
     }
-    
+
     private var sortedKeys: [String] {
         groupedFabricantes.keys.sorted()
     }
@@ -21,6 +31,10 @@ struct ContentView: View {
                 } else if let errorMessage = viewModel.errorMessage {
                     Text("Error: \(errorMessage)")
                 } else {
+                    // Search TextField
+                    TextField("Buscar Fabricantes", text: $searchText)
+                        
+
                     // Iterar sobre las claves ordenadas para mostrar las secciones
                     ForEach(sortedKeys, id: \.self) { key in
                         Section(header: Text(key.capitalized)) {
@@ -43,12 +57,15 @@ struct ContentView: View {
                     Button(action: {
                         showingUploadView.toggle()
                     }) {
-                        Image(systemName: "plus")
+                        Image(systemName: "plus.circle")
                     }
                 }
             }
             .sheet(isPresented: $showingUploadView) {
                 UploadFabricanteView(viewModel: viewModel)
+                    .onDisappear {
+                        viewModel.loadFabricantes()
+                    }
             }
         }
     }
@@ -57,12 +74,13 @@ struct ContentView: View {
         viewModel.deleteFabricante(at: offsets)
     }
 }
+
 struct ManufacturerRow: View {
     let fabricante: Fabricante
 
     var body: some View {
         HStack {
-            
+
             if let logoImage = fabricante.logoImage {
                 Image(uiImage: logoImage)
                     .resizable()

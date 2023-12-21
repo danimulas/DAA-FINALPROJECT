@@ -127,9 +127,9 @@
 				0BEDF60C2B29CC0D003E9AF3 /* ManufacturerViewModel.swift */,
 				0B06D74D2B2B28EE005FCFFF /* ManufacturerDetailView.swift */,
 				0BEDF60E2B29D1D1003E9AF3 /* Model.swift */,
+				0BAED0B12B2CEF8C00E5E822 /* EditBeerView.swift */,
 				0B77832E2B1D2B98008B10A0 /* Assets.xcassets */,
 				0B7783302B1D2B98008B10A0 /* Preview Content */,
-				0BAED0B12B2CEF8C00E5E822 /* EditBeerView.swift */,
 			);
 			path = BeerApi;
 			sourceTree = "<group>";

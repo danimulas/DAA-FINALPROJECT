@@ -16,6 +16,7 @@ struct CervezaRequest: Codable {
     let logo: String
     let descripcion: String
     let grados: Int
+    let kcal: Int
 }
 struct UpdateCervezaRequest: Codable {
     let id_cerveza: String
@@ -24,6 +25,7 @@ struct UpdateCervezaRequest: Codable {
     let logo: String
     let descripcion: String
     let grados: Double
+    let kcal: Double
 }
 class APIService {
     static let shared = APIService()

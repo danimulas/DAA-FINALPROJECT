@@ -38,7 +38,6 @@ class ManufacturersModel {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(_):
-                     
                         self?.loadFabricantes()
                         break;
                     case .failure(_):
@@ -47,6 +46,7 @@ class ManufacturersModel {
                     }
                 }
             }
+        
         }
     func getCervezas(idFabricante: String, completion: @escaping () -> Void) {
             APIService.shared.getCervezas(idFabricante: idFabricante) { [weak self] result in

@@ -13,8 +13,8 @@ struct UploadFabricanteView: View {
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
     @State private var selectedType: String = "nacionales"
-
-    @State private var ManufacturerType = ["importados","nacionales"]
+    
+    @State private var ManufacturerType = ["importadas","nacionales"]
     var body: some View {
         NavigationView {
             VStack {
