@@ -1,7 +1,7 @@
 # BeerApp - Tu Guía de Cervezas
 
 BeerApp es una aplicación desarrollada en Swift, diseñada para los amantes de la cerveza. Ofrece una amplia base de datos de cervezas de todo el mundo, permitiendo a los usuarios explorar, calificar y descubrir nuevas cervezas según sus gustos y preferencias.
-
+## Calificacion Final del Proyecto 9.5/10 SOBRESALIENTE
 ## Características
 
 - **Explorar Cervezas**: Accede a una extensa lista de cervezas con detalles como origen, tipo, graduación alcohólica, y más.
